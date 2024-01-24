@@ -1,65 +1,66 @@
 //#include <iostream>
+//#include <fstream>
 //#include <string>
+//
 //using namespace std;
 //
-//struct WashingMachine {
-//    string brand;
-//    string color;
-//    float width;
-//    float length;
-//    float height;
-//    int power;
-//    int spin_speed;
-//    int temperature;
+//int main()
+//{
+//    string filename1 = "file1.txt";
+//    string filename2 = "file2.txt";
+//    ifstream file1(filename1);
+//    ifstream file2(filename2);
 //
-//    void print() {
-//        cout << "Brand: " << brand << endl;
-//        cout << "Color: " << color << endl;
-//        cout << "Dimensions (W x L x H): " << width << " x " << length << " x " << height << endl;
-//        cout << "Power: " << power << " W" << endl;
-//        cout << "Spin speed: " << spin_speed << " RPM" << endl;
-//        cout << "Temperature: " << temperature << " C" << endl;
+//    if (!file1.is_open())
+//    {
+//        cout << "Could not open file: " << filename1 << endl;
+//        return 0;
 //    }
 //
-//    void set_brand(string new_brand) {
-//        brand = new_brand;
+//    if (!file2.is_open())
+//    {
+//        cout << "Could not open file: " << filename2 << endl;
+//        return 0;
 //    }
 //
-//    void set_color(string new_color) {
-//        color = new_color;
+//    string line1, line2;
+//    int line_number = 0;
+//    bool files_match = true;
+//
+//    while (getline(file1, line1) && getline(file2, line2))
+//    {
+//        line_number++;
+//
+//        if (line1 != line2)
+//        {
+//            files_match = false;
+//            cout << "Line " << line_number << ":" << endl;
+//            cout << filename1 << ": " << line1 << endl;
+//            cout << filename2 << ": " << line2 << endl;
+//        }
 //    }
 //
-//    void set_dimensions(float new_width, float new_length, float new_height) {
-//        width = new_width;
-//        length = new_length;
-//        height = new_height;
+//    if (getline(file1, line1))
+//    {
+//        files_match = false;
+//        cout << "File " << filename1 << " has more lines than " << filename2 << endl;
+//        cout << "Extra line: " << line1 << endl;
 //    }
 //
-//    void set_power(int new_power) {
-//        power = new_power;
+//    if (getline(file2, line2))
+//    {
+//        files_match = false;
+//        cout << "File " << filename2 << " has more lines than " << filename1 << endl;
+//        cout << "Extra line: " << line2 << endl;
 //    }
 //
-//    void set_spin_speed(int new_spin_speed) {
-//        spin_speed = new_spin_speed;
+//    if (files_match)
+//    {
+//        cout << "Files match!" << endl;
 //    }
 //
-//    void set_temperature(int new_temperature) {
-//        temperature = new_temperature;
-//    }
-//};
-//
-//int main() {
-//    WashingMachine WM;
-//
-//    WM.set_brand("Samsung");
-//    WM.set_color("White");
-//    WM.set_dimensions(60.0, 60.0, 85.0);
-//    WM.set_power(2000);
-//    WM.set_spin_speed(1200);
-//    WM.set_temperature(40);
-//
-//    cout << "Washing machine parameters:" << endl;
-//    WM.print();
+//    file1.close();
+//    file2.close();
 //
 //    return 0;
 //}
