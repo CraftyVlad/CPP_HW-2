@@ -28,5 +28,6 @@
   <ItemGroup>
     <Text Include="file1.txt" />
     <Text Include="file2.txt" />
+    <Text Include="file1_stats.txt" />
   </ItemGroup>
 </Project>
