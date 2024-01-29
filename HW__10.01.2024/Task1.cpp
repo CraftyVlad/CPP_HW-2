@@ -1,159 +1,89 @@
 ﻿#include <iostream>
 #include <string>
-#include <algorithm>
 
 using namespace std;
 
-struct Book {
-	string title;
-	string author;
-	string publisher;
-	string genre;
+class Contact {
+private:
+    string name;
+    string homePhone;
+    string workPhone;
+    string mobilePhone;
+    string additionalInfo;
+public:
+
+    Contact(string n, string h, string w, string m, string a) {
+        name = n;
+        homePhone = h;
+        workPhone = w;
+        mobilePhone = m;
+        additionalInfo = a;
+    }
+
+    void setName(string n) {
+        name = n;
+    }
+
+    void setHomePhone(string h) {
+        homePhone = h;
+    }
+
+    void setWorkPhone(string w) {
+        workPhone = w;
+    }
+
+    void setMobilePhone(string m) {
+        mobilePhone = m;
+    }
+
+    void setAdditionalInfo(string a) {
+        additionalInfo = a;
+    }
+
+    string getName() const {
+        return name;
+    }
+
+    string getHomePhone() const {
+        return homePhone;
+    }
+
+    string getWorkPhone() const {
+        return workPhone;
+    }
+
+    string getMobilePhone() const {
+        return mobilePhone;
+    }
+
+    string getAdditionalInfo() const {
+        return additionalInfo;
+    }
+
+    void print() const {
+        cout << "Name: " << name << endl;
+        cout << "Home Phone: " << homePhone << endl;
+        cout << "Work Phone: " << workPhone << endl;
+        cout << "Mobile Phone: " << mobilePhone << endl;
+        cout << "Additional Info: " << additionalInfo << endl << endl;
+    }
+
+    Contact() {
+        cout << "Contact " << name << " deleted" << endl << endl;
+    }
 };
 
-void editBook(Book& book) {
-	cout << "Enter new title: ";
-	getline(cin, book.title);
-	cout << "Enter new author: ";
-	getline(cin, book.author);
-	cout << "Enter new publisher: ";
-	getline(cin, book.publisher);
-	cout << "Enter new genre: ";
-	getline(cin, book.genre);
-}
 
-void printBooks(Book books[], int size) {
-	for (int i = 0; i < size; i++) {
-		cout << "Title: " << books[i].title << endl;
-		cout << "Author: " << books[i].author << endl;
-		cout << "Publisher: " << books[i].publisher << endl;
-		cout << "Genre: " << books[i].genre << endl;
-		cout << endl;
-	}
-}
+    int main() {
+        Contact c1("John Doe", "123-456-7890", "098-765-4321", "121-212-1212", "Friend");
+        c1.print();
 
-void searchByAuthor(Book books[], int size, string author) {
-	bool found = false;
-	for (int i = 0; i < size; i++) {
-		if (books[i].author == author) {
-			cout << "Title: " << books[i].title << endl;
-			cout << "Author: " << books[i].author << endl;
-			cout << "Publisher: " << books[i].publisher << endl;
-			cout << "Genre: " << books[i].genre << endl;
-			cout << endl;
-			found = true;
-		}
-	}
-	if (!found) {
-		cout << "No books found by author \\" << author << endl;
-	}
-}
+        Contact c2;
+        c2.setName("Jane Smith");
+        c2.setMobilePhone("888-888-8888");
+        c2.setAdditionalInfo("Colleague");
+        c2.print();
 
-void searchByTitle(Book books[], int size, string title) {
-	bool found = false;
-	for (int i = 0; i < size; i++) {
-		if (books[i].title == title) {
-			cout << "Title: " << books[i].title << endl;
-			cout << "Author: " << books[i].author << endl;
-			cout << "Publisher: " << books[i].publisher << endl;
-			cout << "Genre: " << books[i].genre << endl;
-			cout << endl;
-			found = true;
-		}
-	}
-	if (!found) {
-		cout << "No books found with title" << title << "" << endl;
-	}
-}
+        return 0;
 
-bool compareTitle(Book book1, Book book2) {
-	return book1.title < book2.title;
-}
-
-bool compareAuthor(Book book1, Book book2) {
-	return book1.author < book2.author;
-}
-
-bool comparePublisher(Book book1, Book book2) {
-	return book1.publisher < book2.publisher;
-}
-
-int main() {
-    const int NUM_BOOKS = 3;
-    Book books[NUM_BOOKS] = {
-        "The Great Gatsby", "F. Scott Fitzgerald", "Scribner", "Novel",
-        "To Kill a Mockingbird", "Harper Lee", "J. B. Lippincott & Co.", "Novel",
-        "1984", "George Orwell", "Secker & Warburg", "Dystopian Fiction"
-    };
-
-    int choice;
-    cout << "// Choices //" << endl;
-    cout << "1. Edit a book" << endl;
-    cout << "2. Print all books" << endl;
-    cout << "3. Search by author" << endl;
-    cout << "4. Search by title" << endl;
-    cout << "5. Sort by title" << endl;
-    cout << "6. Sort by author" << endl;
-    cout << "7. Sort by publisher" << endl;
-    cout << "8. Exit" << endl << endl;
-    cout << "Enter choice: ";
-    cin >> choice;
-
-    switch (choice) {
-    case 1:
-        int index;
-        cout << "Enter index of book to edit (0-" << NUM_BOOKS - 1 << "): ";
-        cin >> index;
-        cin.ignore();
-        if (index >= 0 && index < NUM_BOOKS) {
-            cout << "Editing book #" << index << endl;
-            editBook(books[index]);
-        }
-        else {
-            cout << "Invalid index" << endl;
-        }
-        break;
-    case 2:
-        printBooks(books, NUM_BOOKS);
-        break;
-    case 3: {
-        string newauthor;
-        cout << "Enter author name: ";
-        cin.ignore();
-        getline(cin, newauthor);
-        searchByAuthor(books, NUM_BOOKS, newauthor);
-        break;
     }
-    case 4: {
-        string newtitle;
-        cout << "Enter title: ";
-        cin.ignore();
-        getline(cin, newtitle);
-        searchByTitle(books, NUM_BOOKS, newtitle);
-        break;
-    }
-    case 5:
-        sort(books, books + NUM_BOOKS, compareTitle);
-        cout << "Sorted by title" << endl;
-        break;
-    case 6:
-        sort(books, books + NUM_BOOKS, compareAuthor);
-        cout << "Sorted by author" << endl;
-        break;
-    case 7:
-        sort(books, books + NUM_BOOKS, comparePublisher);
-        cout << "Sorted by publisher" << endl;
-        break;
-    case 8:
-        cout << "Exiting program" << endl;
-        break;
-    default:
-        cout << "Invalid choice" << endl;
-    }
-
-    cin.ignore();
-    cout << endl;
-    while (choice != 8);
-
-    return 0;
-}
