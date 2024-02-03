@@ -11,7 +11,7 @@ private:
     double maxDepth;
 
 public:
-    explicit Reservoir(const string& n = "", double w = 0.0, double l = 0.0, double d = 0.0)
+    explicit Reservoir(const string n = "", double w = 0.0, double l = 0.0, double d = 0.0)
         : type(n), width(w), length(l), maxDepth(d) {}
 
     double approximateVolume() const {
@@ -22,7 +22,7 @@ public:
         return width * length;
     }
 
-    bool sameType(const Reservoir& other) const {
+    bool sameType(const Reservoir other) const {
         return type == other.type;
     }
 
@@ -30,11 +30,11 @@ public:
         return Reservoir(type, width, length, maxDepth);
     }
 
-    const string& getType() const {
+    const string getType() const {
         return type;
     }
 
-    void setType(const string& n) {
+    void setType(const string n) {
         type = n;
     }
 
