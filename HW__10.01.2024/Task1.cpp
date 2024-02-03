@@ -1,88 +1,70 @@
 ﻿#include <iostream>
 #include <string>
-
+#include <vector>
 using namespace std;
 
-class Contact {
+class Reservoir {
 private:
-    string name;
-    string homePhone;
-    string workPhone;
-    string mobilePhone;
-    string additionalInfo;
+    string type;
+    double width;
+    double length;
+    double maxDepth;
+
 public:
+    explicit Reservoir(const string& n = "", double w = 0.0, double l = 0.0, double d = 0.0)
+        : type(n), width(w), length(l), maxDepth(d) {}
 
-    Contact(string n, string h, string w, string m, string a) {
-        name = n;
-        homePhone = h;
-        workPhone = w;
-        mobilePhone = m;
-        additionalInfo = a;
+    double approximateVolume() const {
+        return width * length * maxDepth;
     }
 
-    void setName(string n) {
-        name = n;
+    double surfaceArea() const {
+        return width * length;
     }
 
-    void setHomePhone(string h) {
-        homePhone = h;
+    bool sameType(const Reservoir& other) const {
+        return type == other.type;
     }
 
-    void setWorkPhone(string w) {
-        workPhone = w;
+    Reservoir copy() const {
+        return Reservoir(type, width, length, maxDepth);
     }
 
-    void setMobilePhone(string m) {
-        mobilePhone = m;
+    const string& getType() const {
+        return type;
     }
 
-    void setAdditionalInfo(string a) {
-        additionalInfo = a;
+    void setType(const string& n) {
+        type = n;
     }
 
-    string getName() const {
-        return name;
-    }
-
-    string getHomePhone() const {
-        return homePhone;
-    }
-
-    string getWorkPhone() const {
-        return workPhone;
-    }
-
-    string getMobilePhone() const {
-        return mobilePhone;
-    }
-
-    string getAdditionalInfo() const {
-        return additionalInfo;
-    }
-
-    void print() const {
-        cout << "Name: " << name << endl;
-        cout << "Home Phone: " << homePhone << endl;
-        cout << "Work Phone: " << workPhone << endl;
-        cout << "Mobile Phone: " << mobilePhone << endl;
-        cout << "Additional Info: " << additionalInfo << endl << endl;
-    }
-
-    Contact() {
-        cout << "Contact " << name << " deleted" << endl << endl;
+    void displayInfo() const {
+        cout << "Reservoir: " << type << endl;
+        cout << "Width: " << width << endl;
+        cout << "Length: " << length << endl;
+        cout << "Max Depth: " << maxDepth << endl;
+        cout << "Approximate Volume: " << approximateVolume() << endl;
+        cout << "Surface Area: " << surfaceArea() << endl;
     }
 };
 
+int main() {
+    vector<Reservoir> reservoirs;
 
-    int main() {
-        Contact c1("John Doe", "123-456-7890", "098-765-4321", "121-212-1212", "Friend");
-        c1.print();
+    reservoirs.push_back(Reservoir("Lake", 100.0, 50.0, 10.0));
+    reservoirs.push_back(Reservoir("Lake", 20.0, 10.0, 5.0)); // ось тут можна змінити назву
 
-        Contact c2;
-        c2.setName("Jane Smith");
-        c2.setMobilePhone("888-888-8888");
-        c2.setAdditionalInfo("Colleague");
-        c2.print();
-
-        return 0;
+    for (const Reservoir& r : reservoirs) {
+        r.displayInfo();
+        cout << endl;
     }
+
+    if (reservoirs[0].sameType(reservoirs[1])) {
+        cout << "The reservoirs are of the same type." << endl;
+    }
+    else {
+        cout << "The reservoirs are of different types." << endl;
+    }
+
+    return 0;
+}
