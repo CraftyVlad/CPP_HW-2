@@ -52,7 +52,7 @@ int main() {
     vector<Reservoir> reservoirs;
 
     reservoirs.push_back(Reservoir("Lake", 100.0, 50.0, 10.0));
-    reservoirs.push_back(Reservoir("Lake", 20.0, 10.0, 5.0)); // ось тут можна змінити назву
+    reservoirs.push_back(Reservoir("Lake", 20.0, 10.0, 5.0)); // ось тут можна змінити тип
 
     for (const Reservoir& r : reservoirs) {
         r.displayInfo();
