@@ -1,89 +1,67 @@
 ﻿#include <iostream>
-#include <string>
-
+#include <algorithm>
+#include <vector>
 using namespace std;
 
-class Contact {
-private:
-    string name;
-    string homePhone;
-    string workPhone;
-    string mobilePhone;
-    string additionalInfo;
-public:
+//  максимуму
+template <typename T>
+T findMax(const vector<T>& arr) {
+    return *max_element(arr.begin(), arr.end());
+}
 
-    Contact(string n, string h, string w, string m, string a) {
-        name = n;
-        homePhone = h;
-        workPhone = w;
-        mobilePhone = m;
-        additionalInfo = a;
+// пошук мінімуму
+template <typename T>
+T findMin(const vector<T>& arr) {
+    return *min_element(arr.begin(), arr.end());
+}
+
+// сортування масиву
+template <typename T>
+void sortArray(vector<T>& arr) {
+    sort(arr.begin(), arr.end());
+}
+
+// двійкий пошук в масиві
+template <typename T>
+int binarySearch(const vector<T>& arr, T key) {
+    return binary_search(arr.begin(), arr.end(), key);
+}
+
+// функція для заміни елемента масиву на передане значення
+template <typename T>
+void replaceElement(vector<T>& arr, T oldValue, T newValue) {
+    replace(arr.begin(), arr.end(), oldValue, newValue);
+}
+
+int main() {
+    vector<int> arr = { 5, 2, 8, 1, 9, 4 };
+
+    cout << "Max: " << findMax(arr) << endl;
+    cout << "Min: " << findMin(arr) << endl;
+
+    sortArray(arr);
+    cout << "Sorted array: ";
+    for (const auto& elem : arr) {
+        cout << elem << " ";
+    }
+    cout << endl;
+
+    int key = 5;
+    if (binarySearch(arr, key)) {
+        cout << key << " found in array" << endl;
+    }
+    else {
+        cout << key << " not found in array" << endl;
     }
 
-    void setName(string n) {
-        name = n;
+    int oldValue = 4;
+    int newValue = 10;
+    replaceElement(arr, oldValue, newValue);
+    cout << "Array after changes: ";
+    for (const auto& elem : arr) {
+        cout << elem << " ";
     }
+    cout << endl;
 
-    void setHomePhone(string h) {
-        homePhone = h;
-    }
-
-    void setWorkPhone(string w) {
-        workPhone = w;
-    }
-
-    void setMobilePhone(string m) {
-        mobilePhone = m;
-    }
-
-    void setAdditionalInfo(string a) {
-        additionalInfo = a;
-    }
-
-    string getName() const {
-        return name;
-    }
-
-    string getHomePhone() const {
-        return homePhone;
-    }
-
-    string getWorkPhone() const {
-        return workPhone;
-    }
-
-    string getMobilePhone() const {
-        return mobilePhone;
-    }
-
-    string getAdditionalInfo() const {
-        return additionalInfo;
-    }
-
-    void print() const {
-        cout << "Name: " << name << endl;
-        cout << "Home Phone: " << homePhone << endl;
-        cout << "Work Phone: " << workPhone << endl;
-        cout << "Mobile Phone: " << mobilePhone << endl;
-        cout << "Additional Info: " << additionalInfo << endl << endl;
-    }
-
-    Contact() {
-        cout << "Contact " << name << " deleted" << endl << endl;
-    }
-};
-
-
-    int main() {
-        Contact c1("John Doe", "123-456-7890", "098-765-4321", "121-212-1212", "Friend");
-        c1.print();
-
-        Contact c2;
-        c2.setName("Jane Smith");
-        c2.setMobilePhone("888-888-8888");
-        c2.setAdditionalInfo("Colleague");
-        c2.print();
-
-        return 0;
-
-    }
+    return 0;
+}
