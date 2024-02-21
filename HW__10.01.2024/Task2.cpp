@@ -1,97 +1,67 @@
-﻿//#include <iostream>
+//#include <iostream>
 //using namespace std;
 //
-//template <class T>
-//class Node {
-//public:
-//    T data;
-//    Node* next;
+//class Pet {
+//protected:
+//    string name;
 //
-//    Node(T data) {
-//        this->data = data;
-//        this->next = nullptr;
+//public:
+//    Pet(string name) : name(name) {}
+//
+//    virtual void displayInfo() = 0;
+//};
+//
+//class Dog : public Pet {
+//private:
+//    string breed;
+//
+//public:
+//    Dog(string name, string breed) : Pet(name), breed(breed) {}
+//
+//    void displayInfo() override {
+//        cout << "Dog Name: " << name << endl;
+//        cout << "Breed: " << breed << endl;
 //    }
 //};
 //
-//template <class T>
-//class LinkedList {
+//class Cat : public Pet {
 //private:
-//    Node<T>* head;
-//    int size;
+//    string color;
 //
 //public:
-//    LinkedList() {
-//        head = nullptr;
-//        size = 0;
-//    }
+//    Cat(string name, string color) : Pet(name), color(color) {}
 //
-//    void push(T data) {
-//        Node<T>* newNode = new Node<T>(data);
-//        newNode->next = head;
-//        head = newNode;
-//        size++;
+//    void displayInfo() override {
+//        cout << "Cat Name: " << name << endl;
+//        cout << "Color: " << color << endl;
 //    }
+//};
 //
-//    LinkedList<T>* clone() {
-//        LinkedList<T>* clonedList = new LinkedList<T>();
-//        Node<T>* current = head;
-//        while (current != nullptr) {
-//            clonedList->push(current->data);
-//            current = current->next;
-//        }
-//        return clonedList;
-//    }
+//class Parrot : public Pet {
+//private:
+//    string species;
 //
-//    LinkedList<T>* operator+(const LinkedList<T>& otherList) {
-//        LinkedList<T>* newList = new LinkedList<T>();
-//        Node<T>* current = head;
-//        while (current != nullptr) {
-//            newList->push(current->data);
-//            current = current->next;
-//        }
-//        current = otherList.head;
-//        while (current != nullptr) {
-//            newList->push(current->data);
-//            current = current->next;
-//        }
-//        return newList;
-//    }
+//public:
+//    Parrot(string name, string species) : Pet(name), species(species) {}
 //
-//    LinkedList<T>* operator*(const LinkedList<T>& otherList) {
-//        LinkedList<T>* newList = new LinkedList<T>();
-//        Node<T>* current = head;
-//        while (current != nullptr) {
-//            if (otherList.contains(current->data)) {
-//                newList->push(current->data);
-//            }
-//            current = current->next;
-//        }
-//        return newList;
-//    }
-//
-//    bool contains(T data) {
-//        Node<T>* current = head;
-//        while (current != nullptr) {
-//            if (current->data == data) {
-//                return true;
-//            }
-//            current = current->next;
-//        }
-//        return false;
+//    void displayInfo() override {
+//        cout << "Parrot Name: " << name << endl;
+//        cout << "Species: " << species << endl;
 //    }
 //};
 //
 //int main() {
-//    LinkedList<int> list1;
-//    list1.push(1);
-//    list1.push(2);
+//    Dog dog("Doug", "Pug");
+//    Cat cat("Tom", "Black and white");
+//    Parrot parrot("Davey", "Cockatiel");
 //
-//    LinkedList<int> list2;
-//    list2.push(2);
-//    list2.push(3);
+//    dog.displayInfo();
+//    cout << endl;
 //
-//    LinkedList<int>* concatenatedList = list1 + list2;
-//    LinkedList<int>* intersectionList = list1 * list2;
+//    cat.displayInfo();
+//    cout << endl;
+//
+//    parrot.displayInfo();
 //
 //    return 0;
 //}
