@@ -1,46 +1,74 @@
 ﻿#include <iostream>
 using namespace std;
 
-class Student {
-private:
-    string name;
-    int age;
-    string school;
-
+template <class T>
+class Node {
 public:
-    Student(string name, int age, string school)
-        : name(name), age(age), school(school) {}
+    T data;
+    Node* next;
 
-    void displayInfo() {
-        cout << "Name: " << name << endl;
-        cout << "Age: " << age << endl;
-        cout << "School: " << school << endl;
+    Node(T data) {
+        this->data = data;
+        this->next = nullptr;
     }
 };
 
-class Aspirant : public Student {
+template <class T>
+class Stack {
 private:
-    string researchTopic;
+    Node<T>* top;
+    int size;
 
 public:
-    Aspirant(string name, int age, string school, string researchTopic)
-        : Student(name, age, school), researchTopic(researchTopic) {}
+    Stack() {
+        top = nullptr;
+        size = 0;
+    }
 
-    void displayInfo() {
-        Student::displayInfo();
-        cout << "Research Topic: " << researchTopic << endl;
+    void push(T data) {
+        Node<T>* newNode = new Node<T>(data);
+        newNode->next = top;
+        top = newNode;
+        size++;
+    }
+
+    void pop() {
+        if (top == nullptr) {
+            cout << "Stack is empty." << endl;
+            return;
+        }
+        Node<T>* temp = top;
+        top = top->next;
+        delete temp;
+        size--;
+    }
+
+    T peek() {
+        if (top == nullptr) {
+            cout << "Stack is empty." << endl;
+            return T();
+        }
+        return top->data;
+    }
+
+    bool isEmpty() {
+        return size == 0;
     }
 };
 
 int main() {
-    Student student("John Doe", 20, "School A");
-    Aspirant aspirant("Jane Smith", 25, "School B", "Machine Learning");
+    Stack<int> stack;
 
-    cout << "Student Information:" << endl;
-    student.displayInfo();
+    stack.push(1);
 
-    cout << "\nAspirant Information:" << endl;
-    aspirant.displayInfo();
+
+    cout << "Top element: " << stack.peek() << endl;
+
+    stack.pop();
+    cout << "Top element after pop: " << stack.peek() << endl;
+
+    stack.push(2);
+    cout << "Top element after push: " << stack.peek() << endl;
 
     return 0;
 }
