@@ -1,46 +1,83 @@
 ﻿#include <iostream>
+#include <vector>
 using namespace std;
 
-class Student {
+class List {
+public:
+    virtual void insert(int value) = 0;
+    virtual int remove() = 0;
+};
+
+class Stack : public List {
 private:
-    string name;
-    int age;
-    string school;
+    vector<int> data;
 
 public:
-    Student(string name, int age, string school)
-        : name(name), age(age), school(school) {}
+    void insert(int value) override {
+        data.push_back(value);
+    }
 
-    void displayInfo() {
-        cout << "Name: " << name << endl;
-        cout << "Age: " << age << endl;
-        cout << "School: " << school << endl;
+    int remove() override {
+        if (data.empty()) {
+            cout << "Stack is empty." << endl;
+            return -1;
+        }
+        else {
+            int value = data.back();
+            data.pop_back();
+            return value;
+        }
     }
 };
 
-class Aspirant : public Student {
+class Queue : public List {
 private:
-    string researchTopic;
+    vector<int> data;
 
 public:
-    Aspirant(string name, int age, string school, string researchTopic)
-        : Student(name, age, school), researchTopic(researchTopic) {}
+    void insert(int value) override {
+        data.push_back(value);
+    }
 
-    void displayInfo() {
-        Student::displayInfo();
-        cout << "Research Topic: " << researchTopic << endl;
+    int remove() override {
+        if (data.empty()) {
+            cout << "Queue is empty." << endl;
+            return -1;
+        }
+        else {
+            int value = data.front();
+            data.erase(data.begin());
+            return value;
+        }
     }
 };
 
 int main() {
-    Student student("John Doe", 20, "School A");
-    Aspirant aspirant("Jane Smith", 25, "School B", "Machine Learning");
+    Stack stack;
+    stack.insert(10);
+    stack.insert(20);
+    stack.insert(30);
 
-    cout << "Student Information:" << endl;
-    student.displayInfo();
+    cout << "Stack elements: ";
+    while (true) {
+        int value = stack.remove();
+        if (value == -1) break;
+        cout << value << " ";
+    }
+    cout << endl;
 
-    cout << "\nAspirant Information:" << endl;
-    aspirant.displayInfo();
+    Queue queue;
+    queue.insert(100);
+    queue.insert(200);
+    queue.insert(300);
+
+    cout << "Queue elements: ";
+    while (true) {
+        int value = queue.remove();
+        if (value == -1) break;
+        cout << value << " ";
+    }
+    cout << endl;
 
     return 0;
 }
