@@ -1,90 +1,96 @@
 ﻿#include <iostream>
-#include <exception>
+#include <fstream>
+#include <string>
 using namespace std;
 
-class MemoryException : public exception {
-public:
-    const char* what() const noexcept override {
-        return "Memory allocation failed!";
-    }
-};
-
-class Node {
-public:
-    int data;
-    Node* prev;
-    Node* next;
-    Node(int value) : data(value), prev(nullptr), next(nullptr) {}
-};
-
-class DoublyLinkedList {
+class Directory {
 private:
-    Node* head;
-    Node* tail;
+    string fileName;
+
 public:
-    DoublyLinkedList() : head(nullptr), tail(nullptr) {}
+    Directory(const string& file) : fileName(file) {}
 
-    void insert(int value) {
-        try {
-            Node* newNode = new Node(value);
-            if (head == nullptr) {
-                head = tail = newNode;
-            }
-            else {
-                tail->next = newNode;
-                newNode->prev = tail;
-                tail = newNode;
-            }
-        }
-        catch (bad_alloc& e) {
-            throw MemoryException();
-        }
-    }
-
-    void display() {
-        Node* current = head;
-        while (current != nullptr) {
-            cout << current->data << " ";
-            current = current->next;
-        }
-        cout << endl;
-    }
-
-    void removeLast() {
-        if (tail == nullptr) {
-            throw out_of_range("List is empty.");
-        }
-
-        Node* temp = tail;
-        tail = tail->prev;
-        if (tail != nullptr) {
-            tail->next = nullptr;
+    void addEntry(const string& name, const string& owner, const string& phone, const string& address) {
+        ofstream file(fileName, ios_base::app);
+        if (file.is_open()) {
+            file << name << "," << owner << "," << phone << "," << address << "\n";
+            file.close();
+            cout << "Entry added successfully.\n";
         }
         else {
-            head = nullptr;
+            cerr << "Error opening file for writing.\n";
         }
-        delete temp;
+    }
+
+    void searchByName(const string& name) {
+        ifstream file(fileName);
+        if (file.is_open()) {
+            string line;
+            bool found = false;
+            while (getline(file, line)) {
+                size_t pos = line.find(name);
+                if (pos != string::npos) {
+                    cout << line << "\n";
+                    found = true;
+                }
+            }
+            if (!found) {
+                cout << "Entry with name '" << name << "' not found.\n";
+            }
+            file.close();
+        }
+        else {
+            cerr << "Error opening file for reading.\n";
+        }
+    }
+
+    void searchByOwner(const string& owner) {
+        ifstream file(fileName);
+        if (file.is_open()) {
+            string line;
+            bool found = false;
+            while (getline(file, line)) {
+                size_t pos = line.find(owner);
+                if (pos != string::npos) {
+                    cout << line << "\n";
+                    found = true;
+                }
+            }
+            if (!found) {
+                cout << "Entry with owner '" << owner << "' not found.\n";
+            }
+            file.close();
+        }
+        else {
+            cerr << "Error opening file for reading.\n";
+        }
+    }
+
+    void displayAllEntries() {
+        ifstream file(fileName);
+        if (file.is_open()) {
+            string line;
+            while (getline(file, line)) {
+                cout << line << "\n";
+            }
+            file.close();
+        }
+        else {
+            cerr << "Error opening file for reading.\n";
+        }
     }
 };
 
 int main() {
-    DoublyLinkedList list;
+    Directory myDirectory("directory.txt");
 
-    try {
-        list.insert(10);
-        list.insert(20);
-        list.insert(30);
+    myDirectory.addEntry("Company A", "John Doe", "1234567890", "123 Main St");
+    myDirectory.addEntry("Company B", "Jane Smith", "9876543210", "456 Elm St");
 
-        list.display();
+    myDirectory.displayAllEntries();
 
-        list.removeLast();
-        list.removeLast();
-        list.removeLast();
-        list.removeLast();
-    }
-    catch (exception& e) {
-        cerr << "Exception caught: " << e.what() << endl;
-    }
+    myDirectory.searchByName("Company A");
+    myDirectory.searchByOwner("Jane Smith");
 
     return 0;
 }
