@@ -1,83 +1,90 @@
 ﻿#include <iostream>
-#include <vector>
+#include <exception>
 using namespace std;
 
-class List {
+class MemoryException : public exception {
 public:
-    virtual void insert(int value) = 0;
-    virtual int remove() = 0;
-};
-
-class Stack : public List {
-private:
-    vector<int> data;
-
-public:
-    void insert(int value) override {
-        data.push_back(value);
-    }
-
-    int remove() override {
-        if (data.empty()) {
-            cout << "Stack is empty." << endl;
-            return -1;
-        }
-        else {
-            int value = data.back();
-            data.pop_back();
-            return value;
-        }
+    const char* what() const noexcept override {
+        return "Memory allocation failed!";
     }
 };
 
-class Queue : public List {
-private:
-    vector<int> data;
-
+class Node {
 public:
-    void insert(int value) override {
-        data.push_back(value);
+    int data;
+    Node* prev;
+    Node* next;
+    Node(int value) : data(value), prev(nullptr), next(nullptr) {}
+};
+
+class DoublyLinkedList {
+private:
+    Node* head;
+    Node* tail;
+public:
+    DoublyLinkedList() : head(nullptr), tail(nullptr) {}
+
+    void insert(int value) {
+        try {
+            Node* newNode = new Node(value);
+            if (head == nullptr) {
+                head = tail = newNode;
+            }
+            else {
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+            }
+        }
+        catch (bad_alloc& e) {
+            throw MemoryException();
+        }
     }
 
-    int remove() override {
-        if (data.empty()) {
-            cout << "Queue is empty." << endl;
-            return -1;
+    void display() {
+        Node* current = head;
+        while (current != nullptr) {
+            cout << current->data << " ";
+            current = current->next;
+        }
+        cout << endl;
+    }
+
+    void removeLast() {
+        if (tail == nullptr) {
+            throw out_of_range("List is empty.");
+        }
+
+        Node* temp = tail;
+        tail = tail->prev;
+        if (tail != nullptr) {
+            tail->next = nullptr;
         }
         else {
-            int value = data.front();
-            data.erase(data.begin());
-            return value;
+            head = nullptr;
         }
+        delete temp;
     }
 };
 
 int main() {
-    Stack stack;
-    stack.insert(10);
-    stack.insert(20);
-    stack.insert(30);
+    DoublyLinkedList list;
 
-    cout << "Stack elements: ";
-    while (true) {
-        int value = stack.remove();
-        if (value == -1) break;
-        cout << value << " ";
+    try {
+        list.insert(10);
+        list.insert(20);
+        list.insert(30);
+
+        list.display();
+
+        list.removeLast();
+        list.removeLast();
+        list.removeLast();
+        list.removeLast();
     }
-    cout << endl;
-
-    Queue queue;
-    queue.insert(100);
-    queue.insert(200);
-    queue.insert(300);
-
-    cout << "Queue elements: ";
-    while (true) {
-        int value = queue.remove();
-        if (value == -1) break;
-        cout << value << " ";
+    catch (exception& e) {
+        cerr << "Exception caught: " << e.what() << endl;
     }
-    cout << endl;
 
     return 0;
 }
