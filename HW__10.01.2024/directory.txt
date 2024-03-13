@@ -1,4 +1,0 @@
-Company A,John Doe,1234567890,123 Main St
-Company B,Jane Smith,9876543210,456 Elm St
-Company A,John Doe,1234567890,123 Main St
-Company B,Jane Smith,9876543210,456 Elm St
