@@ -1,0 +1,2 @@
+apple : a fruit that is red or green and grows on trees
+computer : an electronic device for processing data

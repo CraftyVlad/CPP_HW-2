@@ -1,96 +1,91 @@
 ﻿#include <iostream>
-#include <fstream>
+#include <map>
+#include <vector>
 #include <string>
+#include <algorithm>
 using namespace std;
 
-class Directory {
+class HotkeyManager {
 private:
-    string fileName;
+    map<string, string> hotkeys;
 
 public:
-    Directory(const string& file) : fileName(file) {}
+    void addHotkey(const string& hotkey, const string& command) {
+        hotkeys[hotkey] = command;
+    }
 
-    void addEntry(const string& name, const string& owner, const string& phone, const string& address) {
-        ofstream file(fileName, ios_base::app);
-        if (file.is_open()) {
-            file << name << "," << owner << "," << phone << "," << address << "\n";
-            file.close();
-            cout << "Entry added successfully.\n";
+    void removeHotkey(const string& hotkey) {
+        hotkeys.erase(hotkey);
+    }
+
+    string findCommand(const string& hotkey) {
+        if (hotkeys.find(hotkey) != hotkeys.end()) {
+            return hotkeys[hotkey];
         }
         else {
-            cerr << "Error opening file for writing.\n";
+            return "Command not found";
         }
     }
 
-    void searchByName(const string& name) {
-        ifstream file(fileName);
-        if (file.is_open()) {
-            string line;
-            bool found = false;
-            while (getline(file, line)) {
-                size_t pos = line.find(name);
-                if (pos != string::npos) {
-                    cout << line << "\n";
-                    found = true;
-                }
+    vector<string> findHotkeysByCommand(const string& command) {
+        vector<string> result;
+        for (const auto& pair : hotkeys) {
+            if (pair.second == command) {
+                result.push_back(pair.first);
             }
-            if (!found) {
-                cout << "Entry with name '" << name << "' not found.\n";
-            }
-            file.close();
         }
-        else {
-            cerr << "Error opening file for reading.\n";
-        }
+        return result;
     }
 
-    void searchByOwner(const string& owner) {
-        ifstream file(fileName);
-        if (file.is_open()) {
-            string line;
-            bool found = false;
-            while (getline(file, line)) {
-                size_t pos = line.find(owner);
-                if (pos != string::npos) {
-                    cout << line << "\n";
-                    found = true;
-                }
-            }
-            if (!found) {
-                cout << "Entry with owner '" << owner << "' not found.\n";
-            }
-            file.close();
-        }
-        else {
-            cerr << "Error opening file for reading.\n";
-        }
+    void clearAllHotkeys() {
+        hotkeys.clear();
     }
 
-    void displayAllEntries() {
-        ifstream file(fileName);
-        if (file.is_open()) {
-            string line;
-            while (getline(file, line)) {
-                cout << line << "\n";
+    vector<string> findConflictingHotkeys(const HotkeyManager& other) {
+        vector<string> result;
+        for (const auto& pair : hotkeys) {
+            if (other.hotkeys.find(pair.first) != other.hotkeys.end()) {
+                result.push_back(pair.first);
             }
-            file.close();
         }
-        else {
-            cerr << "Error opening file for reading.\n";
-        }
+        return result;
     }
 };
 
 int main() {
-    Directory myDirectory("directory.txt");
+    HotkeyManager manager;
 
-    myDirectory.addEntry("Company A", "John Doe", "1234567890", "123 Main St");
-    myDirectory.addEntry("Company B", "Jane Smith", "9876543210", "456 Elm St");
+    manager.addHotkey("Ctrl+C", "copy");
+    manager.addHotkey("Ctrl+V", "paste");
+    manager.addHotkey("Ctrl+X", "cut");
 
-    myDirectory.displayAllEntries();
+    cout << "Command for Ctrl+C: " << manager.findCommand("Ctrl+C") << endl;
 
-    myDirectory.searchByName("Company A");
-    myDirectory.searchByOwner("Jane Smith");
+    vector<string> copyHotkeys = manager.findHotkeysByCommand("copy");
+    cout << "Hotkeys for copy command: ";
+    for (const auto& hotkey : copyHotkeys) {
+        cout << hotkey << " ";
+    }
+    cout << endl;
+
+    manager.removeHotkey("Ctrl+V");
+
+    HotkeyManager anotherManager;
+    anotherManager.addHotkey("Ctrl+V", "select all");
+
+    vector<string> conflicts = manager.findConflictingHotkeys(anotherManager);
+    if (!conflicts.empty()) {
+        cout << "Conflicting hotkeys: ";
+        for (const auto& hotkey : conflicts) {
+            cout << hotkey << " ";
+        }
+        cout << endl;
+    }
+    else {
+        cout << "No conflicting hotkeys found." << endl;
+    }
+
+    manager.clearAllHotkeys();
 
     return 0;
 }
